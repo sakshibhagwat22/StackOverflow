@@ -1,0 +1,79 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Stripe Subscription Demo</title>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <h1>Stripe Subscription Demo</h1>
+
+  <form id="subscription-form">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="plan">Select a Plan:</label>
+    <select id="plan" name="plan">
+      <option value="silver">Silver</option>
+      <option value="premium">Premium</option>
+    </select>
+
+    <div id="card-element"></div>
+
+    <button type="submit">Subscribe</button>
+  </form>
+
+  <script>
+    // Create a Stripe client
+    const stripe = Stripe('pk_test_51NICxxSJcW5T595YJqI1KfGMDJqI9MnetVNAA8IRaV5oI4h75ghrWtX74FPbVoeljL08m0kmb2bn7Ky09JU1WYHQ0072l3xmlb');
+
+    // Create an instance of Elements
+    const elements = stripe.elements();
+
+    // Create a card Element and mount it to the card-element <div>
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    // Handle the form submission
+    document.getElementById('subscription-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const { paymentMethod, error } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+      });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      const { email, plan } = event.target.elements;
+
+      // Send the payment method and plan details to the server
+      fetch('/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.value,
+          plan: plan.value,
+          payment_method: paymentMethod.id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // Handle the subscription response as needed
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle any errors that occurred during subscription creation
+        });
+    });
+  </script>
+</body>
+</html>
+
+
+ -->
